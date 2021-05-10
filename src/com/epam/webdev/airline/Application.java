@@ -12,6 +12,7 @@ import com.epam.webdev.airline.util.comparator.DistanceAndSpeedComparator;
 import com.epam.webdev.airline.util.comparator.FuelConsumptionComparator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Application {
     public static void main(String[] args) throws PlaneSaveException, PlaneNotFoundException, IncorrectFuelConsumptionData {
@@ -67,5 +68,10 @@ public class Application {
         System.out.println("Total passengers capacity: " + AirlineProcessor.getTotalPassengerCapacity(airline));
 
         System.out.println("Planes with fuel consumption from 12 to 17: " + AirlineProcessor.findPlaneByFuelConsumption(airline, 12, 17));
+
+        airline.removePlane(boing747.getId());
+        airline.removePlane(an124.getId());
+        airline.removePlane(an225.getId());
+        airline.removePlane(su1000.getId());
     }
 }

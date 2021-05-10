@@ -5,6 +5,7 @@ import com.epam.webdev.airline.dao.exception.PlaneSaveException;
 import com.epam.webdev.airline.entity.plane.AbstractPlane;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilePlaneDaoImpl implements PlaneDao {
@@ -72,22 +73,23 @@ public class FilePlaneDaoImpl implements PlaneDao {
 
     @Override
     public boolean delete(Long id) throws PlaneSaveException {
-        boolean result;
+        boolean removeResult;
+        boolean saveResult;
         try {
             List<AbstractPlane> planes = loadAll();
-            result = planes.remove(loadById(id));
+            removeResult = planes.removeIf(plane -> id.compareTo(plane.getId()) == 0);
+            saveResult = saveAllPlanes(planes);
         } catch (Exception e) {
             throw new PlaneSaveException("Plane delete was not successful.", e);
         }
 
-        return result;
+        return removeResult && saveResult;
     }
 
     public boolean saveAllPlanes(List<AbstractPlane> planes) throws PlaneSaveException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(planes);
-            objectOutputStream.flush();
         } catch (IOException e) {
             throw new PlaneSaveException("Plane save was not successful.", e);
         }
