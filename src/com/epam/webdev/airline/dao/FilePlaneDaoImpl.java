@@ -4,11 +4,7 @@ import com.epam.webdev.airline.dao.exception.PlaneNotFoundException;
 import com.epam.webdev.airline.dao.exception.PlaneSaveException;
 import com.epam.webdev.airline.entity.plane.AbstractPlane;
 
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 public class FilePlaneDaoImpl implements PlaneDao {
@@ -91,6 +87,7 @@ public class FilePlaneDaoImpl implements PlaneDao {
         try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(planes);
+            objectOutputStream.flush();
         } catch (IOException e) {
             throw new PlaneSaveException("Plane save was not successful.", e);
         }

@@ -2,54 +2,62 @@ package com.epam.webdev.airline.entity.plane;
 
 import java.io.Serializable;
 
-public class PassengerPlane extends AbstractPlane {
-    private int passengerPlaces;
+public class PassengerPlane extends AbstractPlane implements Serializable {
+    private int passengerCapacity;
 
     public PassengerPlane() {}
 
-    public PassengerPlane(double tankVolume, double fuelConsumptionRate, double maxSpeed, int crewSize, int passengerPlaces) {
-        super(tankVolume, fuelConsumptionRate, maxSpeed, crewSize);
-        this.passengerPlaces = passengerPlaces;
+    public PassengerPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption, int passengerCapacity) {
+        super(maxFlightDistance, maxSpeed, fuelConsumption);
+        this.passengerCapacity = passengerCapacity;
     }
 
-    public int getPassengerPlaces() {
-        return passengerPlaces;
+    public int getPassengerCapacity() {
+        return passengerCapacity;
     }
 
-    public void setPassengerPlaces(int passengerPlaces) {
-        this.passengerPlaces = passengerPlaces;
+    public void setPassengerCapacity(int passengerCapacity) {
+        this.passengerCapacity = passengerCapacity;
+    }
+
+    public void getPassengersOnBoat(){
+
+    }
+
+    public void getPassengersOnBoard(){
+
+    }
+
+    public void releasePassengersFromBoard(){
+
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        PassengerPlane other = (PassengerPlane) o;
-
+        PassengerPlane plane = (PassengerPlane) o;
         if (!super.equals(o)) {
             return false;
         } else {
-            return passengerPlaces == other.passengerPlaces;
+            return Integer.compare(passengerCapacity, plane.passengerCapacity) == 0;
         }
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + passengerPlaces;
+        result = 31 * result + passengerCapacity;
         return result;
     }
 
     @Override
     public String toString() {
-        return "PassengerPlane{" +
+        return getClass().getSimpleName() + "@" +
                 "id=" + super.getId() +
-                ", tankVolume=" + super.getTankVolume() +
-                ", fuelConsumptionRate=" + super.getFuelConsumptionRate() +
+                ", maxFlightDistance=" + super.getMaxFlightDistance() +
                 ", maxSpeed=" + super.getMaxSpeed() +
-                ", crewSize=" + super.getCrewSize() +
-                "passengerPlaces=" + passengerPlaces +
-                '}';
+                ", fuelConsumption=" + super.getFuelConsumption() +
+                ", passengerCapacity=" + passengerCapacity;
     }
 }

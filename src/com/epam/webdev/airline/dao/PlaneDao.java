@@ -12,9 +12,9 @@ public interface PlaneDao {
 
     AbstractPlane loadById(Long id) throws PlaneNotFoundException;
 
-    boolean save(AbstractPlane user) throws PlaneNotFoundException, PlaneSaveException;
+    boolean save(AbstractPlane plane) throws PlaneNotFoundException, PlaneSaveException;
 
-    boolean update(AbstractPlane user) throws PlaneSaveException;
+    boolean update(AbstractPlane plane) throws PlaneSaveException;
 
     boolean delete(Long id) throws PlaneSaveException;
 }

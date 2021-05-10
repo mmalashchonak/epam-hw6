@@ -4,18 +4,16 @@ import java.io.Serializable;
 
 public abstract class AbstractPlane  implements Serializable {
     private Long id;
-    private double tankVolume;
-    private double fuelConsumptionRate;
+    private double maxFlightDistance;
     private double maxSpeed;
-    private int crewSize;
+    private double fuelConsumption;
 
     AbstractPlane() {}
 
-    public AbstractPlane(double tankVolume, double fuelConsumptionRate, double maxSpeed, int crewSize) {
-        this.tankVolume = tankVolume;
-        this.fuelConsumptionRate = fuelConsumptionRate;
+    public AbstractPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption) {
+        this.maxFlightDistance = maxFlightDistance;
         this.maxSpeed = maxSpeed;
-        this.crewSize = crewSize;
+        this.fuelConsumption = fuelConsumption;
     }
 
     public Long getId() {
@@ -26,20 +24,12 @@ public abstract class AbstractPlane  implements Serializable {
         this.id = id;
     }
 
-    public double getTankVolume() {
-        return tankVolume;
+    public double getMaxFlightDistance() {
+        return maxFlightDistance;
     }
 
-    public void setTankVolume(double tankVolume) {
-        this.tankVolume = tankVolume;
-    }
-
-    public double getFuelConsumptionRate() {
-        return fuelConsumptionRate;
-    }
-
-    public void setFuelConsumptionRate(double fuelConsumptionRate) {
-        this.fuelConsumptionRate = fuelConsumptionRate;
+    public void setMaxFlightDistance(double maxFlightDistance) {
+        this.maxFlightDistance = maxFlightDistance;
     }
 
     public double getMaxSpeed() {
@@ -50,46 +40,43 @@ public abstract class AbstractPlane  implements Serializable {
         this.maxSpeed = maxSpeed;
     }
 
-    public int getCrewSize() {
-        return crewSize;
+    public double getFuelConsumption() {
+        return fuelConsumption;
     }
 
-    public void setCrewSize(int crewSize) {
-        this.crewSize = crewSize;
+    public void setFuelConsumption(double fuelConsumption) {
+        this.fuelConsumption = fuelConsumption;
+    }
+
+    public void fly(){
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        AbstractPlane that = (AbstractPlane) o;
-
-        if (id != that.id) return false;
-        if (Double.compare(that.tankVolume, tankVolume) != 0) return false;
-        if (Double.compare(that.fuelConsumptionRate, fuelConsumptionRate) != 0) return false;
-        if (Double.compare(that.maxSpeed, maxSpeed) != 0) return false;
-        return crewSize == that.crewSize;
+        AbstractPlane plane = (AbstractPlane) o;
+        return Long.compare(plane.id, id) == 0 &&
+        Double.compare(plane.maxFlightDistance, maxFlightDistance) == 0 &&
+        Double.compare(plane.fuelConsumption, fuelConsumption) == 0 &&
+        Double.compare(plane.maxSpeed, maxSpeed) != 0;
     }
 
     @Override
     public int hashCode() {
         int result = Long.hashCode(id);
-        result = 31 * result + (int) tankVolume;
-        result = 31 * result + (int) fuelConsumptionRate;
-        result = 31 * result + (int) maxSpeed;
-        result = 31 * result + crewSize;
+        result = 31 * result + Double.hashCode(maxFlightDistance);
+        result = 31 * result + Double.hashCode(maxSpeed);
+        result = 31 * result + Double.hashCode(fuelConsumption);
         return result;
     }
 
     @Override
     public String toString() {
-        return "AbstractPlane{" +
+        return getClass().getSimpleName() + "@" +
                 "id=" + id +
-                ", tankVolume=" + tankVolume +
-                ", fuelConsumptionRate=" + fuelConsumptionRate +
+                ", maxFlightDistance=" + maxFlightDistance +
                 ", maxSpeed=" + maxSpeed +
-                ", crewSize=" + crewSize +
-                '}';
+                ", fuelConsumption=" + fuelConsumption;
     }
 }

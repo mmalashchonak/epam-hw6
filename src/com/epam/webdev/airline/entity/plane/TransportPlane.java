@@ -1,54 +1,60 @@
 package com.epam.webdev.airline.entity.plane;
 
-public class TransportPlane extends AbstractPlane {
-    private double cargoCapacity;
+import java.io.Serializable;
 
-    public TransportPlane() {}
+public class TransportPlane extends AbstractPlane implements Serializable {
+    private double liftingCapacity;
 
-    public TransportPlane(double tankVolume, double fuelConsumptionRate, double maxSpeed, int crewSize, double cargoCapacity) {
-        super(tankVolume, fuelConsumptionRate, maxSpeed, crewSize);
-        this.cargoCapacity = cargoCapacity;
+    public TransportPlane() {
     }
 
-    public double getCargoCapacity() {
-        return cargoCapacity;
+    public TransportPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption, double liftingCapacity) {
+        super(maxFlightDistance, maxSpeed, fuelConsumption);
+        this.liftingCapacity = liftingCapacity;
     }
 
-    public void setCargoCapacity(double cargoCapacity) {
-        this.cargoCapacity = cargoCapacity;
+    public double getLiftingCapacity() {
+        return liftingCapacity;
+    }
+
+    public void setLiftingCapacity(double liftingCapacity) {
+        this.liftingCapacity = liftingCapacity;
+    }
+
+    public void getLoadOnBoard(){
+
+    }
+
+    public void releaseLoadFromBoard(){
+
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TransportPlane)) return false;
-        if (!super.equals(o)) return false;
-
-        TransportPlane other = (TransportPlane) o;
-
+        if (o == null || getClass() != o.getClass()) return false;
+        TransportPlane plane = (TransportPlane) o;
         if (!super.equals(o)) {
             return false;
         } else {
-            return Double.compare(other.cargoCapacity, cargoCapacity) == 0;
+            return Double.compare(plane.liftingCapacity, liftingCapacity) == 0;
         }
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (int) cargoCapacity;
+        result = 31 * result + Double.hashCode(liftingCapacity);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Freighter{" +
+        return getClass().getSimpleName() + "@" +
                 "id=" + super.getId() +
-                ", tankVolume=" + super.getTankVolume() +
-                ", fuelConsumptionRate=" + super.getFuelConsumptionRate() +
+                ", maxFlightDistance=" + super.getMaxFlightDistance() +
                 ", maxSpeed=" + super.getMaxSpeed() +
-                ", crewSize=" + super.getCrewSize() +
-                "cargoCapacity=" + cargoCapacity +
-                '}';
+                ", fuelConsumption=" + super.getFuelConsumption() +
+                ", liftingCapacity=" + liftingCapacity;
     }
 }
