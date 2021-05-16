@@ -4,12 +4,17 @@ import java.io.Serializable;
 
 public class PassengerPlane extends AbstractPlane implements Serializable {
     private int passengerCapacity;
+    private PlaneClass planeClass;
+    private double luggageWeight;
 
-    public PassengerPlane() {}
+    public PassengerPlane() {
+    }
 
-    public PassengerPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption, int passengerCapacity) {
+    public PassengerPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption, int passengerCapacity, PlaneClass planeClass, double luggageWeight) {
         super(maxFlightDistance, maxSpeed, fuelConsumption);
         this.passengerCapacity = passengerCapacity;
+        this.planeClass = planeClass;
+        this.luggageWeight = luggageWeight;
     }
 
     public int getPassengerCapacity() {
@@ -20,16 +25,31 @@ public class PassengerPlane extends AbstractPlane implements Serializable {
         this.passengerCapacity = passengerCapacity;
     }
 
-    public void getPassengersOnBoat(){
-
+    public PlaneClass getPlaneClass() {
+        return planeClass;
     }
 
-    public void getPassengersOnBoard(){
-
+    public void setPlaneClass(PlaneClass planeClass) {
+        this.planeClass = planeClass;
     }
 
-    public void releasePassengersFromBoard(){
+    public double getLuggageWeight() {
+        return luggageWeight;
+    }
 
+    public void setLuggageWeight(double luggageWeight) {
+        this.luggageWeight = luggageWeight;
+    }
+
+
+    public boolean getPassengersOnBoard() {
+        // native method
+        return true;
+    }
+
+    public boolean releasePassengersFromBoard() {
+        // native method
+        return true;
     }
 
     @Override
@@ -40,7 +60,9 @@ public class PassengerPlane extends AbstractPlane implements Serializable {
         if (!super.equals(o)) {
             return false;
         } else {
-            return Integer.compare(passengerCapacity, plane.passengerCapacity) == 0;
+            return Integer.compare(passengerCapacity, plane.passengerCapacity) == 0 &&
+                    planeClass == plane.planeClass &&
+                    Double.compare(luggageWeight, plane.luggageWeight) == 0;
         }
     }
 
@@ -48,6 +70,8 @@ public class PassengerPlane extends AbstractPlane implements Serializable {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + passengerCapacity;
+        result = 31 * result + planeClass.hashCode();
+        result = 31 * result + Double.hashCode(luggageWeight);
         return result;
     }
 
@@ -58,6 +82,8 @@ public class PassengerPlane extends AbstractPlane implements Serializable {
                 ", maxFlightDistance=" + super.getMaxFlightDistance() +
                 ", maxSpeed=" + super.getMaxSpeed() +
                 ", fuelConsumption=" + super.getFuelConsumption() +
-                ", passengerCapacity=" + passengerCapacity;
+                ", passengerCapacity=" + passengerCapacity +
+                ", planeClass=" + planeClass +
+                ", luggageWeight=" + luggageWeight;
     }
 }

@@ -48,7 +48,9 @@ public abstract class AbstractPlane  implements Serializable {
         this.fuelConsumption = fuelConsumption;
     }
 
-    public void fly(){
+    public boolean fly(){
+        // native method
+        return true;
     }
 
     @Override

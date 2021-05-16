@@ -8,14 +8,16 @@ import java.util.List;
 
 public interface PlaneDao {
 
-    List<AbstractPlane> loadAll() throws PlaneNotFoundException;
+    List<AbstractPlane> loadAllPlanes() throws PlaneNotFoundException;
 
-    AbstractPlane loadById(Long id) throws PlaneNotFoundException;
+    boolean saveAllPlanes(List<AbstractPlane> planes) throws PlaneSaveException;
 
-    boolean save(AbstractPlane plane) throws PlaneNotFoundException, PlaneSaveException;
+    AbstractPlane loadPlaneById(Long id) throws PlaneNotFoundException;
 
-    boolean update(AbstractPlane plane) throws PlaneSaveException;
+    boolean savePlane(AbstractPlane plane) throws PlaneNotFoundException, PlaneSaveException;
 
-    boolean delete(Long id) throws PlaneSaveException;
+    boolean updatePlane(AbstractPlane plane) throws PlaneSaveException;
+
+    boolean deletePlane(Long id) throws PlaneSaveException;
 }
 

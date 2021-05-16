@@ -4,13 +4,15 @@ import java.io.Serializable;
 
 public class TransportPlane extends AbstractPlane implements Serializable {
     private double liftingCapacity;
+    private double liftingVolume;
 
     public TransportPlane() {
     }
 
-    public TransportPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption, double liftingCapacity) {
+    public TransportPlane(double maxFlightDistance, double maxSpeed, double fuelConsumption, double liftingCapacity, double liftingVolume) {
         super(maxFlightDistance, maxSpeed, fuelConsumption);
         this.liftingCapacity = liftingCapacity;
+        this.liftingVolume = liftingVolume;
     }
 
     public double getLiftingCapacity() {
@@ -21,12 +23,22 @@ public class TransportPlane extends AbstractPlane implements Serializable {
         this.liftingCapacity = liftingCapacity;
     }
 
-    public void getLoadOnBoard(){
-
+    public double getLiftingVolume() {
+        return liftingVolume;
     }
 
-    public void releaseLoadFromBoard(){
+    public void setLiftingVolume(double liftingVolume) {
+        this.liftingVolume = liftingVolume;
+    }
 
+    public boolean getLoadOnBoard(){
+        // native method
+        return true;
+    }
+
+    public boolean releaseLoadFromBoard(){
+        // native method
+        return true;
     }
 
     @Override
@@ -37,7 +49,8 @@ public class TransportPlane extends AbstractPlane implements Serializable {
         if (!super.equals(o)) {
             return false;
         } else {
-            return Double.compare(plane.liftingCapacity, liftingCapacity) == 0;
+            return Double.compare(plane.liftingCapacity, liftingCapacity) == 0 &&
+                    Double.compare(plane.liftingVolume, liftingVolume) == 0;
         }
     }
 
@@ -45,6 +58,7 @@ public class TransportPlane extends AbstractPlane implements Serializable {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + Double.hashCode(liftingCapacity);
+        result = 31 * result + Double.hashCode(liftingVolume);
         return result;
     }
 
@@ -55,6 +69,7 @@ public class TransportPlane extends AbstractPlane implements Serializable {
                 ", maxFlightDistance=" + super.getMaxFlightDistance() +
                 ", maxSpeed=" + super.getMaxSpeed() +
                 ", fuelConsumption=" + super.getFuelConsumption() +
-                ", liftingCapacity=" + liftingCapacity;
+                ", liftingCapacity=" + liftingCapacity +
+                ", liftingVolume=" + liftingVolume;
     }
 }

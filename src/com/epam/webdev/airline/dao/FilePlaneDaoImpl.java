@@ -3,34 +3,34 @@ package com.epam.webdev.airline.dao;
 import com.epam.webdev.airline.dao.exception.PlaneNotFoundException;
 import com.epam.webdev.airline.dao.exception.PlaneSaveException;
 import com.epam.webdev.airline.entity.plane.AbstractPlane;
+import com.epam.webdev.airline.source.file.FileDataBase;
+import com.epam.webdev.airline.source.file.exception.FileLoadException;
+import com.epam.webdev.airline.source.file.exception.FileSaveException;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FilePlaneDaoImpl implements PlaneDao {
 
-    private String filePath;
+    private final FileDataBase fileDataBase;
 
-    public FilePlaneDaoImpl(String filePath) {
-        this.filePath = filePath;
+    public FilePlaneDaoImpl(FileDataBase fileDataBase) {
+        this.fileDataBase = fileDataBase;
     }
 
     @Override
-    public List<AbstractPlane> loadAll() throws PlaneNotFoundException {
-        List<AbstractPlane> planes;
-        try (FileInputStream fileInputStream = new FileInputStream(filePath);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            planes = (List<AbstractPlane>) objectInputStream.readObject();
-        } catch (Exception e) {
+    public List<AbstractPlane> loadAllPlanes() throws PlaneNotFoundException {
+        List<AbstractPlane> planes = null;
+        try {
+            planes = fileDataBase.loadAllPlanes();
+        } catch (FileLoadException e) {
             throw new PlaneNotFoundException("Planes can not be written from file.", e);
         }
         return planes;
     }
 
     @Override
-    public AbstractPlane loadById(Long id) throws PlaneNotFoundException {
-        List<AbstractPlane> planes = loadAll();
+    public AbstractPlane loadPlaneById(Long id) throws PlaneNotFoundException {
+        List<AbstractPlane> planes = loadAllPlanes();
         for (AbstractPlane plane : planes) {
             if (plane.getId().equals(id)) {
                 return plane;
@@ -41,11 +41,11 @@ public class FilePlaneDaoImpl implements PlaneDao {
     }
 
     @Override
-    public boolean save(AbstractPlane plane) throws PlaneSaveException {
+    public boolean savePlane(AbstractPlane plane) throws PlaneSaveException {
         boolean addResult;
         boolean saveResult;
         try {
-            List<AbstractPlane> planes = loadAll();
+            List<AbstractPlane> planes = loadAllPlanes();
             addResult = planes.add(plane);
             saveResult = saveAllPlanes(planes);
         } catch (Exception e) {
@@ -56,12 +56,12 @@ public class FilePlaneDaoImpl implements PlaneDao {
     }
 
     @Override
-    public boolean update(AbstractPlane plane) throws PlaneSaveException {
+    public boolean updatePlane(AbstractPlane plane) throws PlaneSaveException {
         boolean removeResult;
         boolean addResult;
         try {
-            List<AbstractPlane> planes = loadAll();
-            removeResult = planes.remove(loadById(plane.getId()));
+            List<AbstractPlane> planes = loadAllPlanes();
+            removeResult = planes.remove(loadPlaneById(plane.getId()));
             addResult = planes.add(plane);
             saveAllPlanes(planes);
         } catch (Exception e) {
@@ -72,11 +72,11 @@ public class FilePlaneDaoImpl implements PlaneDao {
     }
 
     @Override
-    public boolean delete(Long id) throws PlaneSaveException {
+    public boolean deletePlane(Long id) throws PlaneSaveException {
         boolean removeResult;
         boolean saveResult;
         try {
-            List<AbstractPlane> planes = loadAll();
+            List<AbstractPlane> planes = loadAllPlanes();
             removeResult = planes.removeIf(plane -> id.compareTo(plane.getId()) == 0);
             saveResult = saveAllPlanes(planes);
         } catch (Exception e) {
@@ -86,11 +86,11 @@ public class FilePlaneDaoImpl implements PlaneDao {
         return removeResult && saveResult;
     }
 
+    @Override
     public boolean saveAllPlanes(List<AbstractPlane> planes) throws PlaneSaveException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(planes);
-        } catch (IOException e) {
+        try {
+            fileDataBase.saveAllPlanes(planes);
+        } catch (FileSaveException e) {
             throw new PlaneSaveException("Plane save was not successful.", e);
         }
         return true;
